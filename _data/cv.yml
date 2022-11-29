@@ -1,0 +1,100 @@
+- title: General Information
+  type: map
+  contents:
+    - name: Full Name
+      value: Justin Le Louëdec
+    - name: Date of Birth
+      value: 23rd November 1995
+    - name: Languages
+      value: English, French
+
+- title: Education
+  type: time_table
+  contents:
+    - title: PhD Computer Science
+      institution: University of Lincoln, Lincoln, United Kingdom
+      year: 2018-2022
+      description:
+        Automated 3D traits measurement for strawberries
+
+    - title: Master of Science in Informatics (MOSIG)
+      institution: Université Grenoble Alpes, Grenoble, France
+      year: 2016-2018
+
+    - title: BSc Computer science
+      institution: Napier University, Edinburgh, United Kingdom
+      year: 2015-2016
+
+    - title: DUT (Diplome Universitaire Technologique) Software Engineering
+      institution: Université Grenoble Alpes, Grenoble, France
+      year: 2013-2015
+     
+
+- title: Experience
+  type: time_table
+  contents:
+    - title: Research internship
+      institution: Inria, Grenoble, France
+      year: 2018
+      description:
+        - Proposing a Deep learning model capable of predicting chess player’s visual attention.
+        - Work published at the ACM Symposium on Eye Tracking Research and Application (ETRA 2019).
+
+    - title: Training Research Internship
+      institution: LIGLab, Grenoble, France
+      year: 2017
+      description:
+        - Gesture recognition using Deep Learning methods.
+        - Description 2.
+
+    - title: Software Engineer Internship
+      institution: ILL Grenoble, France
+      year: 2015
+      description:
+        - Creating monitoring software for RS-232 serial port to help IT teams to create experimentation on Neutrons.
+   
+
+# - title: Open Source Projects
+#   type: time_table
+#   contents:
+#     - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
+#       year: 2015-now
+#       description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+
+- title: Reviewer work
+  type: time_table
+  contents:
+    - year: 2022
+      items:
+        - NEURIPS
+
+     
+    - year: 2021
+      items: 
+        - Elsevier , Computer and electronics in agriculture
+        - ICLR , mentee reviewer
+
+    - year: 2020
+      items: 
+        - IEEE , CVPR Workshop on computer vision for agriculture
+        - PLOS ONE , PLOS ONE journal paper
+        - IEEE , IEEE Image processing
+
+- title: Academic Interests
+  type: nested_list
+  contents:
+    - title: Computer vision.
+      items: 
+        - 3D multi-modal vision.
+        - Single view reconstruction with parametric models.
+        - Simulation-driven learning.
+        - Neural field and implicit representation.
+    # - title: Machine learning.
+    #   items:
+    #     - Description 1.
+    #     - Description 2.
+
+- title: Other Interests
+  type: list
+  contents:
+    - <u>Hobbies:</u> Hiking, Mountain biking, Powerlifting, Drawing, Reading, Video game development
