@@ -62,7 +62,7 @@ const authorsParts = splitStr(entry.data.authors, HIGHLIGHTAUTHOR);
         </div>
         <div class="text-sm">
           In <div class="inline italic">{entry.data.pub}</div>
-          {entry.data.date.format("YYYY");}
+          {entry.data.date.getYear()}
         </div>
       </div>
       <!-- <p class="text-sm mt-2 break-words">
