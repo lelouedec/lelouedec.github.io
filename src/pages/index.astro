@@ -16,9 +16,7 @@ const blog = (await getCollection("blog"))
 
 const publications: CollectionEntry<"publications">[] = (
   await getCollection("publications")
-)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_PUBLICATIONS_ON_HOMEPAGE);
+).slice(0, SITE.NUM_PUBLICATIONS_ON_HOMEPAGE);
 ---
 
 <Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
