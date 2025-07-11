@@ -49,7 +49,6 @@ const authorsParts = splitStr(entry.data.authors, HIGHLIGHTAUTHOR);
         <div class="text-md font-semibold w-full">
           {entry.data.title}
         </div>
-        {entry.data.date}
         <div class="text-sm w-full">
           {authorsParts.map((part:any) =>
             part === HIGHLIGHTAUTHOR ? <u><strong>{part}</strong></u> : part
@@ -63,11 +62,12 @@ const authorsParts = splitStr(entry.data.authors, HIGHLIGHTAUTHOR);
         </div>
         <div class="text-sm">
           In <div class="inline italic">{entry.data.pub}</div>
+          {entry.data.year}
         </div>
       </div>
-      <p class="text-sm mt-2 break-words">
+      <!-- <p class="text-sm mt-2 break-words">
         {entry.data.description}
-      </p>
+      </p> -->
     </div>
   </div>
 </div>
