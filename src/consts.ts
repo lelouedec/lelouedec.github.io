@@ -1,15 +1,15 @@
 import type { Metadata, Site } from "@types";
 
 export const SITE: Site = {
-  TITLE: "Astro Micro Academics",
-  DESCRIPTION: "Astro Micro Academics is for academic user.",
-  EMAIL: "youremial@gmail.com",
+  TITLE: "Justin Le Louëdec",
+  DESCRIPTION: "Personal and professional website",
+  EMAIL: "justin.lelouedec@gmail.com",
   NUM_POSTS_ON_HOMEPAGE: 2,
   NUM_PUBLICATIONS_ON_HOMEPAGE: 3,
-  SITEURL: 'https://astro-micro-academic.vercel.app' // Update here to link the RSS icon to your website rss
+  SITEURL: 'https://lelouedec.github.io' // Update here to link the RSS icon to your website rss
 };
 
-export const HIGHLIGHTAUTHOR = "John B"
+export const HIGHLIGHTAUTHOR = "Justin L"
 
 export const HOME: Metadata = {
   TITLE: "Home",
