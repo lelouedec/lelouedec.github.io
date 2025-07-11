@@ -12,7 +12,7 @@ import pagefind from "astro-pagefind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astro-micro-academic.vercel.app",
+  site: "https://lelouedec.github.io",
   integrations: [tailwind(), sitemap(), mdx(), pagefind()],
   markdown: {
     shikiConfig: {
@@ -21,5 +21,5 @@ export default defineConfig({
     rehypePlugins: [rehypeHeadingIds, rehypeAccessibleEmojis, rehypeKatex],
     remarkPlugins: [remarkToc, remarkMath, remarkEmoji],
   },
-  server: { port: 1234, host: true}
+  // server: { port: 1234, host: true}
 });
