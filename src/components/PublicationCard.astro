@@ -49,6 +49,7 @@ const authorsParts = splitStr(entry.data.authors, HIGHLIGHTAUTHOR);
         <div class="text-md font-semibold w-full">
           {entry.data.title}
         </div>
+        {entry.data.date}
         <div class="text-sm w-full">
           {authorsParts.map((part:any) =>
             part === HIGHLIGHTAUTHOR ? <u><strong>{part}</strong></u> : part

@@ -9,7 +9,7 @@ export const SITE: Site = {
   SITEURL: 'https://lelouedec.github.io' // Update here to link the RSS icon to your website rss
 };
 
-export const HIGHLIGHTAUTHOR = "Justin L"
+export const HIGHLIGHTAUTHOR = "Justin Le Louëdec"
 
 export const HOME: Metadata = {
   TITLE: "Home",
