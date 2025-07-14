@@ -34,7 +34,7 @@ const preprints = (await getCollection("preprints"));
           {
             preprints.map((pre) => (
               <li>
-                <PublicationCard entry={pre} />
+                <PreprintCard entry={pre} />
               </li>
             ))
           }
