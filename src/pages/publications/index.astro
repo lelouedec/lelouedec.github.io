@@ -7,7 +7,7 @@ import PublicationCard from "@components/PublicationCard.astro";
 // import PublicationCard from "@components/PublicationCard";
 
 const publications = (await getCollection("publications"));
-const preprint = (await getCollection("preprint"));
+const preprints = (await getCollection("preprints"));
 ---
 
 <Layout title={RESEARCH.TITLE} description={RESEARCH.DESCRIPTION}>
@@ -32,7 +32,7 @@ const preprint = (await getCollection("preprint"));
         </div>
         <ul class="animate not-prose flex flex-col gap-4">
           {
-            preprint.map((pre) => (
+            preprints.map((pre) => (
               <li>
                 <PublicationCard entry={pre} />
               </li>
