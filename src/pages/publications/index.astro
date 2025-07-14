@@ -6,7 +6,7 @@ import { RESEARCH } from "@consts";
 import PublicationCard from "@components/PublicationCard.astro";
 // import PublicationCard from "@components/PublicationCard";
 
-const publications = (await getCollection("publications")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const publications = (await getCollection("publications"));
 const preprint = (await getCollection("preprint"));
 ---
 
