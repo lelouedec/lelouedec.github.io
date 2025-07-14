@@ -46,4 +46,4 @@ const peprints = defineCollection({
   }),
 });
 
-export const collections = { blog, publications };
+export const collections = { blog, publications,peprints };
