@@ -8,7 +8,7 @@ codeURL: "Code: https://github.com/lelouedec/beacon2science"
 # webURL: "Web: https://github.com/markhorn-dev/astro-sphere"
 img: "/rupert-cat.gif"
 imgAlt: "Paper Teaser"
-pub: "Space Weather"
+pub: "In Space Weather"
 # dataURL: "Data: "
 ---
 

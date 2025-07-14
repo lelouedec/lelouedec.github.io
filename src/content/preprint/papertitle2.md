@@ -8,7 +8,7 @@ paperURL: "Paper: https://arxiv.org/abs/2506.16194"
 # webURL: "Web: https://github.com/markhorn-dev/astro-sphere"
 img: "/rupert-cat.gif"
 imgAlt: "Paper Teaser"
-pub: "Space Weather"
+pub: "Submitted in Space Weather"
 # dataURL: "Data: https://github.com/markhorn-dev/astro-sphere"
 ---
 

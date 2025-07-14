@@ -6,7 +6,8 @@ import { RESEARCH } from "@consts";
 import PublicationCard from "@components/PublicationCard.astro";
 // import PublicationCard from "@components/PublicationCard";
 
-const publications = (await getCollection("publications"));
+const publications = (await getCollection("publications")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const preprint = (await getCollection("preprint"));
 ---
 
 <Layout title={RESEARCH.TITLE} description={RESEARCH.DESCRIPTION}>
@@ -14,7 +15,7 @@ const publications = (await getCollection("publications"));
     <aside data-pagefind-ignore>
       <div class="space-y-10">
         <div class="animate font-semibold text-black dark:text-white">
-          Research
+          Accepted
         </div>
         <ul class="animate not-prose flex flex-col gap-4">
           {
@@ -25,6 +26,20 @@ const publications = (await getCollection("publications"));
             ))
           }
         </ul>
+
+         <div class="animate font-semibold text-black dark:text-white">
+          Preprints
+        </div>
+        <ul class="animate not-prose flex flex-col gap-4">
+          {
+            preprint.map((pre) => (
+              <li>
+                <PublicationCard entry={pre} />
+              </li>
+            ))
+          }
+        </ul>
+
       </div>
     </aside>
   </Container>
