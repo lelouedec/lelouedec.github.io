@@ -4,7 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import { RESEARCH } from "@consts";
 import PublicationCard from "@components/PublicationCard.astro";
-// import PublicationCard from "@components/PublicationCard";
+import PreprintCard from "@components/PreprintCard.astro";
 
 const publications = (await getCollection("publications"));
 const preprints = (await getCollection("preprints"));
