@@ -10,5 +10,7 @@ img: "/rupert-cat.gif"
 imgAlt: "Paper Teaser"
 pub: "Submitted in Space Weather"
 # dataURL: "Data: https://github.com/markhorn-dev/astro-sphere"
+dataURL: "Data: "
+
 ---
 
