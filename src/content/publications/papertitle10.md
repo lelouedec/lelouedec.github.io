@@ -6,7 +6,7 @@ authors: "Justin Le Louëdec, Thomas Guntz, James L Crowley, Dominique Vaufreyda
 paperURL: "Paper: https://dl.acm.org/doi/abs/10.1145/3314111.3319827"
 # codeURL: "Code: https://astro-sphere-demo.vercel.app"
 # webURL: "Web: https://github.com/markhorn-dev/astro-sphere"
-img: "/rupert-cat.gif"
+img: "/chess_paper.png"
 imgAlt: "Paper Teaser"
 pub: "In Proceedings of the 11th ACM Symposium on Eye Tracking Research & Applications}"
 dataURL: "Data: "
