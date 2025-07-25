@@ -13,7 +13,7 @@ export const HIGHLIGHTAUTHOR = "Justin Le Louëdec"
 
 export const HOME: Metadata = {
   TITLE: "Home",
-  DESCRIPTION: "Astro Micro is an accessible theme for Astro.",
+  DESCRIPTION: "Justin Le Louëdec personal website",
 };
 
 export const BLOG: Metadata = {
