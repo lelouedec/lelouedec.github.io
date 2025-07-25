@@ -6,7 +6,7 @@ authors: "Maike Bauer, Justin Le Louëdec, Tanja Amerstorfer, Luke Barnard, Davi
 paperURL: "Paper: https://arxiv.org/abs/2506.16194"
 # codeURL: "Code: https://astro-sphere-demo.vercel.app"
 # webURL: "Web: https://github.com/markhorn-dev/astro-sphere"
-img: "/rupert-cat.gif"
+img: "/STRUDL.png"
 imgAlt: "Paper Teaser"
 pub: "Submitted in Space Weather"
 # dataURL: "Data: https://github.com/markhorn-dev/astro-sphere"
