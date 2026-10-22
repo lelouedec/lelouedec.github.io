@@ -4,10 +4,8 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import { RESEARCH } from "@consts";
 import PublicationCard from "@components/PublicationCard.astro";
-import PreprintCard from "@components/PreprintCard.astro";
 
 const publications = (await getCollection("publications"));
-<!-- const preprints = (await getCollection("preprints")); -->
 ---
 
 <Layout title={RESEARCH.TITLE} description={RESEARCH.DESCRIPTION}>
@@ -27,19 +25,7 @@ const publications = (await getCollection("publications"));
           }
         </ul>
 
-        <!-- <div class="animate font-semibold text-black dark:text-white">
-          Preprints
-        </div>
-        <ul class="animate not-prose flex flex-col gap-4">
-          {
-            preprints.map((pre) => (
-              <li>
-                <PreprintCard entry={pre} />
-              </li>
-            ))
-          }
-        </ul> -->
-      <!-- </div> -->
+       
     </aside>
   </Container>
 </Layout>
