@@ -60,6 +60,15 @@ const projects = defineCollection({
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
+    papers: z.array(z.object({
+        title: z.string(),
+        authors: z.string(),
+        venue: z.string(),
+        year: z.number(),
+        url: z.string().optional(),
+        note: z.string().optional(),   // e.g. "first author", "co-author"
+        })).default([]),
+
   }),
 });
 

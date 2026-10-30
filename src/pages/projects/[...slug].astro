@@ -14,6 +14,7 @@ export async function getStaticPaths() {
   return projects.map((project) => ({
     params: { slug: project.slug },
     props: project,
+    
   }));
 }
 type Props = CollectionEntry<"projects">;
@@ -21,6 +22,7 @@ type Props = CollectionEntry<"projects">;
 const projects = (await getCollection("projects"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+
 
 const index = projects.findIndex((p) => p.slug === Astro.params.slug);
 // list is newest-first: "newer" is the previous index, "older" is the next one
@@ -99,6 +101,24 @@ const { Content, headings } = await project.render();
 
     <article class="animate">
       <Content />
+      {d.papers.length > 0 && (
+        <section class="mt-16">
+            <h2 class="text-2xl font-semibold mb-4">Publications</h2>
+            <ul class="space-y-3 text-sm">
+            {d.papers.map((p) => (
+                <li>
+                <span class="font-semibold">
+                    {p.url ? <a href={p.url} target="_blank" rel="noopener noreferrer" class="underline">{p.title}</a> : p.title}
+                </span>
+                <br />
+                {p.authors} · {p.venue}, {p.year}
+                {p.note && <span class="opacity-70"> ({p.note})</span>}
+                </li>
+            ))}
+            </ul>
+        </section>
+        )}
+      
 
       <nav class="mt-24 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {newerProject ? (

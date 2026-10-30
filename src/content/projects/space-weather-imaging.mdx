@@ -1,0 +1,125 @@
+---
+title: "Space Weather Imaging: Seeing CMEs Between the Sun and Earth"
+summary: "Machine learning for heliospheric imager data: sharpening real-time STEREO images, automatically detecting CME fronts, and using L5 observations to predict arrivals."
+startDate: 2023-06-05   # TODO: your start date
+cover: /projects/space-weather-imaging/cover.jpg
+coverAlt: "Beacon, enhanced beacon and science heliospheric images of the same CME"
+tags: ["computer vision", "machine learning", "CME", "heliospheric imagers", "STEREO", "space weather"]
+role: "Lead on Beacon2Science; supervision and co-developer on STRUDL and L5 forecasting"   # TODO: confirm
+collaborators: ["Maike Bauer", "Tanja Amerstorfer", "Jackie A. Davies", "Luke Barnard", "David Barnes", "Helmut Lammer", "Christian Möstl"]
+links:
+  - { label: "Beacon2Science paper", url: "https://doi.org/10.1029/2025SW004440" }
+  - { label: "STRUDL", url: "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2025SW004561" }
+  - { label: "L5 data assimilation", url: "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2025SW004886" }
+  - { label: "Code", url: "" }   # TODO
+featured: true
+papers:
+  - title: "Beacon2Science: Enhancing STEREO/HI beacon data with machine learning for efficient CME tracking"
+    authors: "J. Le Louëdec, M. Bauer, T. Amerstorfer, J. A. Davies"
+    venue: "Space Weather 23(7), e2025SW004440"
+    year: 2025
+    url: "https://doi.org/10.1029/2025SW004440"
+    note: "first author"
+  - title: "Solar Transient Recognition Using Deep Learning (STRUDL) for Heliospheric Imager Data"
+    authors: "M. Bauer, J. Le Louëdec, T. Amerstorfer, L. Barnard, D. Barnes, H. Lammer"
+    venue: "Space Weather 23(9), e2025SW004561"
+    year: 2025
+    url: "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2025SW004561"
+    note: "co-author"
+  - title: "Predicting CME Arrivals with Heliospheric Imagers from L5: A Data Assimilation Approach"
+    authors: "T. Amerstorfer, J. Le Louëdec, D. Barnes, M. Bauer, J. A. Davies, S. Majumdar, E. Weiler, C. Möstl"
+    venue: "Space Weather"
+    year: 2026
+    url: "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2025SW004886"
+    note: "co-author"
+---
+import Video from "@components/Video.astro";
+import Gallery from "@components/Gallery.astro";
+
+## The problem
+
+Coronal mass ejections (CMEs) are huge eruptions of plasma and magnetic field from the Sun. When one hits Earth it can trigger a geomagnetic storm that threatens satellites and power infrastructure. Coronagraphs only see a CME close to the Sun, out to about 30 solar radii, which is a little over 13% of the Sun–Earth distance. **Heliospheric imagers (HI)** on spacecraft like STEREO watch the whole space between the Sun and Earth, so a CME can be followed from its origin to its impact.
+
+Making that useful for forecasting raises three problems:
+
+1. **Real-time HI data is poor.** The fast "beacon" images are much lower quality than the science data.
+2. **CMEs are still tracked by hand.** This is slow and subjective.
+3. **We need arrival times.** Tracking has to turn into a forecast.
+
+This project tackles all three. It is part of the FWF-funded project *Improved Solar Storm Modelling with Machine Learning* at GeoSphere Austria.
+
+---
+
+## Beacon2Science: making real-time data usable
+
+STEREO sends two kinds of HI data:
+
+| | Science | Beacon |
+|---|---|---|
+| Resolution | 1024 × 1024 px | 256 × 256 px |
+| Cadence | 40 min | 120 min |
+| Availability | ~4 days later | Near real time |
+
+Earlier work concluded that beacon data could not match science data for CME arrival forecasting. Beacon2Science is a pipeline designed to close that gap.
+
+<Gallery images={[
+  { src: "/projects/space-weather-imaging/beacon-vs-science.png", alt: "Beacon versus science image", caption: "The same CME in beacon, enhanced beacon and science data" },  
+]} />
+
+**How it works**
+1. **Denoising and upsampling:** a GAN-based network improves signal-to-noise ratio and spatial resolution, while staying consistent between consecutive frames.
+2. **Cadence upsampling:** a flow-based network infers CME motion between images and generates interpolated frames.
+3. **Front segmentation and tracking:** running differences and time-elongation maps (J-plots) are built from the enhanced images.
+
+<Video src="/projects/space-weather-imaging/interpolation.mp4" caption="Frames interpolated between two beacon images" />
+
+**What we found**
+- The enhanced images show CME features more clearly than the original beacon data and are comparable to science data.
+- CME fronts stay more visible at larger elongations in the HI-1 field of view.
+- The smoother J-plots are better inputs for the ELEvoHI arrival-time model.
+- TODO: add your key quantitative results (image quality metrics, tracking differences).
+
+**My contribution:** TODO (for example: designed and trained both networks, built the evaluation against science data, ran the tracking comparison).
+
+---
+
+## STRUDL: detecting CMEs automatically
+
+STRUDL (Solar Transient Recognition Using Deep Learning) automatically detects and segments CME fronts in HI images. It was trained on thousands of images from STEREO-A. From the segmented regions it derives the CME front itself, which can then be tracked.
+
+<Gallery images={[
+  { src: "/projects/space-weather-imaging/strudl.png", alt: "STRUDL detections on STEREO-A images", caption: "Detected CME regions and derived front" },
+]} />
+
+STRUDL reliably detects and tracks strong CMEs. Weak and overlapping events remain hard, and performance improves with more training data.
+
+**My contribution:** TODO.
+
+---
+
+## Forecasting arrivals from L5
+
+TODO: two or three sentences on the data assimilation approach, once you've chosen what to highlight. The title is "Predicting CME arrivals with heliospheric imagers from L5", and it feeds HI observations into an arrival-time forecast. Relevant to ESA's upcoming Vigil mission at L5.
+
+**My contribution:** TODO.
+
+---
+
+## Next: coronagraphs and multiple viewpoints
+
+With STEREO-A near L4 and the solar cycle at maximum, combining viewpoints is increasingly powerful. Current and upcoming work extends the same ideas closer to the Sun:
+
+- **Coronagraph CME detection and segmentation:** TODO (datasets, models, status).
+- **Multi-view and 3D reconstruction:** combining COR2 polarised sequences with other spacecraft views, including PUNCH, to localise CME structure in 3D and recover depth.
+
+<Gallery images={[
+  { src: "/projects/space-weather-imaging/multiview.png", alt: "Multi-viewpoint CME reconstruction", caption: "Early multi-view reconstruction result" },
+]} />
+
+---
+
+## Talks and posters
+
+- EGU General Assembly 2024, *Enhancing STEREO-HI data with machine learning for efficient CME forecasting* (Vienna)
+- PUNCH5 Science Meeting 2024, *Enhancing STEREO-HI data with machine learning for efficient CME forecasting and multi-spacecraft observations* (contributed talk)
+- PUNCH5 Science Meeting 2024, *Automated detection and tracking of CMEs using HI instruments* (poster, Bauer et al.)
