@@ -1,0 +1,126 @@
+---
+title: "Strawberry Perception for Robotic Picking"
+summary: "Using 3D sensing and deep learning to find, count and orient strawberries on real farms, so robots can pick them without damaging the fruit."
+startDate: 2019-10-01   # TODO: confirm
+endDate: 2023-06-01     # TODO: confirm
+cover: /projects/strawberry-perception/cover.jpg
+coverAlt: "3D point cloud of a strawberry plant with segmented fruit"
+tags: ["computer vision", "3D vision", "deep learning", "agricultural robotics", "point clouds"]
+role: "Lead researcher"   # TODO: confirm
+collaborators: ["Grzegorz Cielniak", "Bo Li"]
+links:
+  - { label: "CEA paper", url: "https://doi.org/10.1016/j.compag.2021.106374" }
+  - { label: "arXiv", url: "https://arxiv.org/abs/2111.13663" }
+  - { label: "Code", url: "" }   # TODO
+papers:
+  - title: "Evaluation of 3D Vision Systems for Detection of Small Objects in Agricultural Environments"
+    authors: "J. Le Louëdec, B. Li, G. Cielniak"
+    venue: "15th International Conference on Computer Vision Theory and Applications (VISAPP)"
+    year: 2020
+    url: "https://www.scitepress.org/Papers/2020/91828"
+    note: "first author"
+  - title: "Determining shape of strawberry crops with spherical harmonics"
+    authors: "J. Le Louëdec, G. Cielniak"
+    venue: "UK-RAS Conference on Robotics and Autonomous Systems"
+    year: 2020
+    note: "first author"
+  - title: "3D shape sensing and deep learning-based segmentation of strawberries"
+    authors: "J. Le Louëdec, G. Cielniak"
+    venue: "Computers and Electronics in Agriculture 190, 106374"
+    year: 2021
+    url: "https://doi.org/10.1016/j.compag.2021.106374"
+    note: "first author"
+  - title: "Gaussian map predictions for 3D surface feature localisation and counting"
+    authors: "J. Le Louëdec, G. Cielniak"
+    venue: "32nd British Machine Vision Conference (BMVC)"
+    year: 2021
+    note: "first author"
+  - title: "Key point-based orientation estimation of strawberries for robotic fruit picking"
+    authors: "J. Le Louëdec, G. Cielniak"
+    venue: "International Conference on Computer Vision Systems (ICVS), Springer"
+    year: 2023
+    note: "first author"
+---
+import Video from "@components/Video.astro";
+import Gallery from "@components/Gallery.astro";
+
+## The problem
+
+Soft fruit like strawberries is delicate, grows in clusters, and is picked by hand in labour-intensive work. A harvesting robot has to answer several questions about every berry before it can touch it:
+
+1. **Where is it?** Fruit hides behind leaves and overlaps with other fruit.
+2. **What shape is it?** Size and shape decide whether a berry is worth picking and how to grip it.
+3. **Which way does it point?** The gripper must approach from the right direction without bruising the fruit.
+
+Standard 2D images struggle with all three. 3D sensing gives direct access to shape, position and occlusion, but it had mostly been used indoors or in controlled settings. This project asked how far 3D perception can go in real strawberry farms, and built methods step by step from detection to orientation.
+
+<Gallery columns={1} images={[
+  { src: "/projects/strawberry-perception/overview.png", alt: "From 3D sensing to picking", caption: "TODO: overview figure of the full perception pipeline" },
+]} />
+
+---
+
+## Step 1: Which 3D sensor? (2020)
+
+Before building any model, we needed to know whether affordable 3D cameras can see small, soft objects in a real farm. We compared **stereo** and **time-of-flight** cameras for perceiving strawberry shape and for segmenting fruit from the background based on shape. We also compared 2D image-based and full 3D approaches on data collected at real strawberry farms.
+
+- TODO: key finding (which sensor performed better, and where each failed).
+- The conclusion was that current sensors still limit what is possible, which motivates better 3D sensing technology.
+
+<Gallery images={[
+  { src: "/projects/strawberry-perception/sensors.png", alt: "Stereo and time-of-flight data", caption: "The same scene captured by stereo and time-of-flight cameras" },
+  { src: "/projects/strawberry-perception/field.jpg", alt: "Data collection in a polytunnel", caption: "Data collection on a strawberry farm" },
+]} />
+
+**My contribution:** TODO.
+
+---
+
+## Step 2: Segmenting strawberries in 3D (2020–2021)
+
+Standard deep networks for point clouds treat them as unordered sets of points. Camera-based 3D sensors do better than that, because their data is organised: every point has a pixel neighbour. We designed a **3D deep neural network that exploits this organised structure** to segment strawberries directly from the sensor output.
+
+A simulated study also asked how good the 3D shape has to be for analysis to work, which gives sensor designers a target. An early part of this work looked at describing strawberry shape compactly with spherical harmonics.
+
+<Gallery images={[
+  { src: "/projects/strawberry-perception/segmentation.png", alt: "3D segmentation result", caption: "Segmented strawberries in an organised point cloud" },
+  { src: "/projects/strawberry-perception/shape-quality.png", alt: "Effect of shape quality on segmentation", caption: "TODO: effect of shape quality on segmentation accuracy" },
+]} />
+
+- TODO: headline accuracy result.
+
+**My contribution:** TODO.
+
+---
+
+## Step 3: Locating and counting surface features (2021)
+
+Shape quality tells you ripeness and variety, and the small features on a berry's surface are a useful signal for it. Counting them on a 3D surface is hard because density-based methods fall apart when the features are close together or overlap.
+
+We replaced density estimation with a **Gaussian map representation**, in which the network predicts a smooth map whose peaks mark each feature. Trained on several hundred 3D scans of strawberries from a public dataset, it was more accurate and more precise than the state-of-the-art density-based methods.
+
+<Gallery images={[
+  { src: "/projects/strawberry-perception/gaussian-map.png", alt: "Gaussian map prediction", caption: "Predicted Gaussian map and detected features on a 3D scan" },
+]} />
+
+**My contribution:** TODO.
+
+---
+
+## Step 4: Orientation for picking (2023)
+
+A robot can't pick a berry it can't orient. We introduced a **key-point-based method that predicts a strawberry's 3D orientation directly from a 2D image**. Instead of requiring a 3D reconstruction of each fruit, it finds anatomical key points and derives the orientation from them, so a standard camera is enough to set the gripper's approach.
+
+<Video src="/projects/strawberry-perception/orientation.mp4" caption="TODO: predicted key points and orientation over time" />
+
+- TODO: headline accuracy result.
+
+**My contribution:** TODO.
+
+---
+
+## What this work shows
+
+Moving from comparing sensors, to 3D segmentation, to fine-grained features, to orientation from plain 2D images, each paper turned a limitation of the previous one into the next question. Together they form a perception stack for picking strawberries in real farm conditions.
+
+TODO: one or two sentences on where this work led. For example, whether the methods were tested on a robot or taken up by other groups. The 2021 segmentation work has been cited by others working on strawberry detection in polytunnels.
