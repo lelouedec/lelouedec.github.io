@@ -1,11 +1,11 @@
 ---
 title: "Space Weather Imaging: Seeing CMEs Between the Sun and Earth"
-summary: "Machine learning for heliospheric imager data: sharpening real-time STEREO images, automatically detecting CME fronts, and using L5 observations to predict arrivals."
+summary: "Machine learning for heliospheric imager data: sharpening real-time STEREO images, automatically detecting CME in several instruments, automatic 3D reconstruction of CMEs  and using L5 observations to predict arrivals."
 startDate: 2023-06-05   # TODO: your start date
-cover: /projects/space-weather-imaging/cover.jpg
+cover: /space-weather-imaging/coverimage.jpeg
 coverAlt: "Beacon, enhanced beacon and science heliospheric images of the same CME"
 tags: ["computer vision", "machine learning", "CME", "heliospheric imagers", "STEREO", "space weather"]
-role: "Lead on Beacon2Science; supervision and co-developer on STRUDL and L5 forecasting"   # TODO: confirm
+role: "Lead on Beacon2Science; supervision and co-developer on STRUDL and L5 forecasting"  
 collaborators: ["Maike Bauer", "Tanja Amerstorfer", "Jackie A. Davies", "Luke Barnard", "David Barnes", "Helmut Lammer", "Christian Möstl"]
 links:
   - { label: "Beacon2Science paper", url: "https://doi.org/10.1029/2025SW004440" }
@@ -50,7 +50,7 @@ This project tackles all three. It is part of the FWF-funded project *Improved S
 
 ---
 
-## Beacon2Science: making real-time data usable
+## Beacon2Science: making real-time data usable for CME tracking
 
 STEREO sends two kinds of HI data:
 
@@ -73,50 +73,70 @@ Earlier work concluded that beacon data could not match science data for CME arr
 2. **Cadence upsampling:** a flow-based network infers CME motion between images and generates interpolated frames.
 3. **Front segmentation and tracking:** running differences and time-elongation maps (J-plots) are built from the enhanced images.
 
-<Video src="/space-weather-imaging/trim3.mp4" caption="Frames interpolated between two beacon images" />
+<Video src="/space-weather-imaging/trim3.mp4" caption="Beacon vs Beacon2Science vs Science example" />
 
 **What we found**
 - The enhanced images show CME features more clearly than the original beacon data and are comparable to science data.
 - CME fronts stay more visible at larger elongations in the HI-1 field of view.
-- The smoother J-plots are better inputs for the ELEvoHI arrival-time model.
-- TODO: add your key quantitative results (image quality metrics, tracking differences).
+- The smoother J-plots help tracking closer to science data.
+- The main issue with Beacon-data for forecasting lies within the datagaps, which should be considered for future missions.
 
-**My contribution:** TODO (for example: designed and trained both networks, built the evaluation against science data, ran the tracking comparison).
+**My contribution:** I developped the method, gathered datasets, and coded pytorch models and pipeline and their evaluation and drafted the Publication.
 
 ---
 
-## STRUDL: detecting CMEs automatically
+## STRUDL: CME front detection in Heliospheric Imager data
 
-STRUDL (Solar Transient Recognition Using Deep Learning) automatically detects and segments CME fronts in HI images. It was trained on thousands of images from STEREO-A. From the segmented regions it derives the CME front itself, which can then be tracked.
+*Project led by Maike Bauer during her PhD at the Austrian Space Weather Office.*
 
 
 
-STRUDL reliably detects and tracks strong CMEs. Weak and overlapping events remain hard, and performance improves with more training data.
+STRUDL (Solar Transient Recognition Using Deep Learning) automatically detects and segments CME fronts in HI images. It was trained on thousands of images from STEREO-A. From the segmented regions it derives the CME front itself, which can then be tracked. STRUDL reliably detects and tracks strong CMEs. Weak and overlapping events remain hard, and performance improves with more training data. We can futher use the tracks to forecast the CME arrival time and this is currently being investigated in ongoing work.
 
-**My contribution:** TODO.
+<Gallery columns={1} images={[
+  { src: "/space-weather-imaging/STRUDL.jpg", alt: "Sequences of images showcasing the model's segmentation performance using the best method-threshold combination threshold(mean) = 0.45. The overlap between the predicted front and the ground truth mask is shown. Each pixel belonging to the front is classified as a TP (purple), FP (pink), or FN (orange). Panel (a) shows a single Coronal Mass Ejection (CME) front close to the Sun, while panel (b) shows two CME fronts, one being further away from the Sun and thus fainter than the other one." }, 
+  ]} />
+
+
+**My contribution:** I worked with Maike Bauer as her main supervisor and contributed to the developpement of the deep-learning model, training method and annotations.
 
 ---
 
 ## Forecasting arrivals from L5
 
-TODO: two or three sentences on the data assimilation approach, once you've chosen what to highlight. The title is "Predicting CME arrivals with heliospheric imagers from L5", and it feeds HI observations into an arrival-time forecast. Relevant to ESA's upcoming Vigil mission at L5.
+Predicting CME arrival time using HI data seemed to be highly dependent on the lenght of the tracks. In this study we looked at how the lenght of the tracks affected the performances of CMEs' arrival time forecasting, when the spacecraft would be positioned around the L5 point, similarly to the future Vigil Mission.
 
-**My contribution:** TODO.
+**My contribution:** I helped develop the tracking tool used during this study and was one of the three scientists in charge of tracking all the CMEs in the paper. I further helped in commenting and improving the manuscript.
 
 ---
 
-## Next: coronagraphs and multiple viewpoints
+##  Next and OnGoing: coronagraphs and multiple viewpoints
 
-With STEREO-A near L4 and the solar cycle at maximum, combining viewpoints is increasingly powerful. Current and upcoming work extends the same ideas closer to the Sun:
-
-- **Coronagraph CME detection and segmentation:** TODO (datasets, models, status).
-- **Multi-view and 3D reconstruction:** combining COR2 polarised sequences with other spacecraft views, including PUNCH, to localise CME structure in 3D and recover depth.
+Most forecasting and propagation models rely on manual detection and public catalogues such as DONKI, but automatic CME detection and reconstruction is progressing fast and we propose to build a whole pipeline to detect, track and reconstruct CMEs from multiple coronagraphs view-points to use for forecasting and building large statistical CME catalogues from historical data.
 
 
+**Results presented at ESWW 2025 and 2026 and published soon** 
+
+- New deep-learning instance segmentation model to detect CMEs in  LASCO C2 and STEREO COR2-A/B.
+- Temporal tracking to obtain height, position angle and speed.
+- Differentiable GCS-style 3D mesh fitted to multi-view masks to recover direction, extent and orientation => initialise propagation models.
+- Automatic detection and reconstruction => less observer bias & enables large statistical studies of CME rates, kinematics and morphology.
+- Fully automatic near-real-time forecasting.
+- With ESA’s Vigil mission at L5 and future L1 and L4 mission, it will help and constrain CME forecasting and analysis.
+
+---
 ---
 
 ## Talks and posters
-
-- EGU General Assembly 2024, *Enhancing STEREO-HI data with machine learning for efficient CME forecasting* (Vienna)
-- PUNCH5 Science Meeting 2024, *Enhancing STEREO-HI data with machine learning for efficient CME forecasting and multi-spacecraft observations* (contributed talk)
-- PUNCH5 Science Meeting 2024, *Automated detection and tracking of CMEs using HI instruments* (poster, Bauer et al.)
+- ESWW 2023, Toulouse, France, *Enhancing STEREO-HI data with machine learning for efficient CME forecasting* (Poster)
+- EGU General Assembly 2024, Vienna, Austria, *Enhancing STEREO-HI data with machine learning for efficient CME forecasting* (contributed Talk)
+- PUNCH5 Science Meeting 2024 Boulder, USA, *Enhancing STEREO-HI data with machine learning for efficient CME forecasting and multi-spacecraft observations* (contributed Talk)
+- PUNCH5 Science Meeting 2024 Boulder, USA, *Automated detection and tracking of CMEs using HI instruments* (poster, Bauer et al.)
+- COSPAR 2024 Busan, Korea, *Enhancing STEREO-HI beacon data with machine learning for efficient CME forecasting* (contributed Talk)
+- ESWW 2024, Coimbra, Portugal, CNN-based detection and tracking of CMEs in HI data (Talk, Bauer et al.)
+- ESWW 2024, Coimbra, Portugal, Enhancing STEREO-HI beacon data with machine learning for improved near-real-time CME forecasting (Poster)
+- Space-weather science from the fifth Lagrange point, London, UK, Space weather prediction pipeline for real-time heliospheric imaging data (contributed Talk)
+- ESWW 2025, Umeå, Sweden, Toward Operational Space Weather: Automated 3D CME Reconstruction (Poster)
+- ESWW 2025, Umeå, Sweden, Automatic Real-Time CME Detection and Forecasting using STEREO-HI Beacon Data (Poster, Bauer et al.)
+- ESWW 2026, Florence, Italy, Automatic CME detection, tracking and reconstruction in coronagraphs (Poster)
+- ESWW 2026, Florence, Italy, Assessing the use of automatic CME tracking in HI within a drag-based forecasting pipeline (Talk, Bauer et al.)
