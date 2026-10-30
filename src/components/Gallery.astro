@@ -1,6 +1,17 @@
 ---
-const { images = [] } = Astro.props; // [{ src, alt, caption }]
+interface GalleryImage {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  images?: GalleryImage[];
+}
+
+const { images = [] } = Astro.props;
 ---
+
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
   {images.map((img) => (
     <figure>
