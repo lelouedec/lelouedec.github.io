@@ -1,0 +1,17 @@
+---
+const { src, youtube, caption, poster } = Astro.props;
+---
+<figure class="my-6">
+  {youtube ? (
+    <div class="aspect-video">
+      <iframe class="w-full h-full rounded-lg" loading="lazy"
+        src={`https://www.youtube-nocookie.com/embed/${youtube}`}
+        title={caption ?? "Project video"} allowfullscreen></iframe>
+    </div>
+  ) : (
+    <video class="w-full rounded-lg" controls preload="metadata" poster={poster} playsinline>
+      <source src={src} type="video/mp4" />
+    </video>
+  )}
+  {caption && <figcaption class="text-sm opacity-70 mt-2">{caption}</figcaption>}
+</figure>

@@ -1,0 +1,131 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+import TableOfContents from "@components/TableOfContents.astro";
+// import Giscus from "@components/Giscus.astro";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("projects"))
+    .filter((p) => !p.data.draft)
+    .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: project,
+  }));
+}
+type Props = CollectionEntry<"projects">;
+
+const projects = (await getCollection("projects"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+
+const index = projects.findIndex((p) => p.slug === Astro.params.slug);
+// list is newest-first: "newer" is the previous index, "older" is the next one
+const newerProject = index > 0 ? projects[index - 1] : null;
+const olderProject = index !== -1 && index < projects.length - 1 ? projects[index + 1] : null;
+
+const project = Astro.props;
+const d = project.data;
+const { Content, headings } = await project.render();
+---
+
+<Layout title={d.title} description={d.summary}>
+  <Container>
+    <div class="animate">
+      <BackToPrevious href="/projects">Back to projects</BackToPrevious>
+    </div>
+
+    <div class="my-10 space-y-4">
+      <div class="animate flex items-center gap-1.5 font-base text-sm">
+        <FormattedDate date={d.startDate} />
+        &ndash;
+        {d.endDate ? <FormattedDate date={d.endDate} /> : <span>present</span>}
+        {d.role && (
+          <>
+            &bull;
+            <span>{d.role}</span>
+          </>
+        )}
+      </div>
+
+      <h1 class="animate text-4xl font-semibold text-black dark:text-white">
+        {d.title}
+      </h1>
+
+      <p class="animate text-lg">{d.summary}</p>
+
+      {d.collaborators.length > 0 && (
+        <p class="animate font-base text-sm">
+          <span class="font-semibold">With:</span> {d.collaborators.join(", ")}
+        </p>
+      )}
+
+      {d.tags.length > 0 && (
+        <div class="animate font-base text-sm">
+          {d.tags.map((tag) => (
+            <span class="inline-block my-1 mx-1 rounded-full px-2 py-1 bg-orange-300 dark:bg-orange-500">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {d.links.length > 0 && (
+        <div class="animate flex flex-wrap gap-2 pt-1">
+          {d.links.map((l) => (
+            <a
+              href={l.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="rounded-full px-3 py-1 text-sm border border-black/20 dark:border-white/20 hover:bg-cyan-200 dark:hover:bg-cyan-500 transition-colors duration-300 ease-in-out"
+            >
+              {l.label} ↗
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <img
+      src={d.cover}
+      alt={d.coverAlt}
+      class="animate w-full rounded-xl mb-10"
+    />
+
+    {headings.length > 0 && <TableOfContents headings={headings} />}
+
+    <article class="animate">
+      <Content />
+
+      <nav class="mt-24 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {newerProject ? (
+          <a
+            href={`/projects/${newerProject.slug}`}
+            class="rounded-lg border border-black/15 dark:border-white/15 p-4 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+          >
+            <div class="text-xs opacity-60">← Newer project</div>
+            <div class="font-semibold">{newerProject.data.title}</div>
+          </a>
+        ) : <div />}
+        {olderProject ? (
+          <a
+            href={`/projects/${olderProject.slug}`}
+            class="rounded-lg border border-black/15 dark:border-white/15 p-4 text-right hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+          >
+            <div class="text-xs opacity-60">Older project →</div>
+            <div class="font-semibold">{olderProject.data.title}</div>
+          </a>
+        ) : <div />}
+      </nav>
+
+      <!--
+      <div class="mt-24">
+        <Giscus />
+      </div>
+      -->
+    </article>
+  </Container>
+</Layout>

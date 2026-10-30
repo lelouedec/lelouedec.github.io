@@ -1,0 +1,114 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+
+const projects = (await getCollection("projects"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+
+const allTags = [...new Set(projects.flatMap((p) => p.data.tags))].sort();
+
+const period = (start: Date, end?: Date) => {
+  const s = start.getFullYear();
+  if (!end) return `${s} – present`;
+  const e = end.getFullYear();
+  return s === e ? `${s}` : `${s} – ${e}`;
+};
+---
+
+<Layout title="Projects" description="Projects I have worked on, with videos, figures and explanations.">
+  <Container>
+    <div class="space-y-10">
+      <div class="animate space-y-2">
+        <h1 class="text-3xl font-semibold text-black dark:text-white">Projects</h1>
+        <p>Selected work from the last five years, with figures, videos and explanations.</p>
+      </div>
+
+      {allTags.length > 0 && (
+        <div class="animate flex flex-wrap gap-2 text-sm" id="tag-filters">
+          <button
+            data-tag="all"
+            class="tag-btn rounded-full px-3 py-1 bg-orange-300 dark:bg-orange-500 transition-colors"
+          >
+            All
+          </button>
+          {allTags.map((tag) => (
+            <button
+              data-tag={tag}
+              class="tag-btn rounded-full px-3 py-1 border border-black/20 dark:border-white/20 transition-colors"
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <ul class="animate grid grid-cols-1 md:grid-cols-2 gap-6">
+        {projects.map((p) => (
+          <li data-tags={p.data.tags.join("|")} class="project-card">
+            <a
+              href={`/projects/${p.slug}`}
+              class="group block h-full rounded-xl border border-black/15 dark:border-white/15 overflow-hidden hover:shadow-lg transition"
+            >
+              <div class="aspect-video overflow-hidden bg-black/5 dark:bg-white/5">
+                <img
+                  src={p.data.cover}
+                  alt={p.data.coverAlt}
+                  loading="lazy"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div class="p-4 space-y-2">
+                <div class="flex items-center justify-between text-xs opacity-70">
+                  <span>{period(p.data.startDate, p.data.endDate)}</span>
+                  {p.data.role && <span>{p.data.role}</span>}
+                </div>
+                <h2 class="text-lg font-semibold text-black dark:text-white group-hover:underline">
+                  {p.data.title}
+                </h2>
+                <p class="text-sm">{p.data.summary}</p>
+                {p.data.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-1.5 pt-1">
+                    {p.data.tags.map((t) => (
+                      <span class="text-xs rounded-full px-2 py-0.5 bg-orange-300/60 dark:bg-orange-500/60">
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {projects.length === 0 && <p>No projects yet.</p>}
+    </div>
+  </Container>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".tag-btn");
+  const cards = document.querySelectorAll<HTMLElement>(".project-card");
+
+  const activeClasses = ["bg-orange-300", "dark:bg-orange-500"];
+  const inactiveClasses = ["border", "border-black/20", "dark:border-white/20"];
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tag = btn.dataset.tag;
+
+      buttons.forEach((b) => {
+        const isActive = b === btn;
+        activeClasses.forEach((c) => b.classList.toggle(c, isActive));
+        inactiveClasses.forEach((c) => b.classList.toggle(c, !isActive));
+      });
+
+      cards.forEach((card) => {
+        const tags = (card.dataset.tags ?? "").split("|");
+        card.style.display = tag === "all" || tags.includes(tag!) ? "" : "none";
+      });
+    });
+  });
+</script>

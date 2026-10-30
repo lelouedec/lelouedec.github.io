@@ -1,0 +1,11 @@
+---
+const { images = [] } = Astro.props; // [{ src, alt, caption }]
+---
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+  {images.map((img) => (
+    <figure>
+      <img src={img.src} alt={img.alt} loading="lazy" class="rounded-lg w-full" />
+      {img.caption && <figcaption class="text-sm opacity-70 mt-1">{img.caption}</figcaption>}
+    </figure>
+  ))}
+</div>

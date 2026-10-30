@@ -9,16 +9,14 @@ import type { CollectionEntry } from "astro:content";
 import PublicationCard from "@components/PublicationCard.astro";
 import SocialIcons from "@components/SocialIcons.astro";
 
-const blog = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
 const publications: CollectionEntry<"publications">[] = (
   await getCollection("publications")
 ).slice(0, SITE.NUM_PUBLICATIONS_ON_HOMEPAGE);
 
 const { URL, icon, icon_size } = Astro.props;
+
+const project = (await getCollection("projects", p => !p.data.draft))
 
 ---
 
