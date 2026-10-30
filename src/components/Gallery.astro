@@ -7,16 +7,114 @@ interface GalleryImage {
 
 interface Props {
   images?: GalleryImage[];
+  columns?: 1 | 2 | 3;
 }
 
-const { images = [] } = Astro.props;
+const { images = [], columns = 2 } = Astro.props;
+
+const colClass = {
+  1: "sm:grid-cols-1",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-3",
+}[columns];
 ---
 
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-  {images.map((img) => (
-    <figure>
-      <img src={img.src} alt={img.alt} loading="lazy" class="rounded-lg w-full" />
-      {img.caption && <figcaption class="text-sm opacity-70 mt-1">{img.caption}</figcaption>}
-    </figure>
-  ))}
+<div data-gallery class="my-8">
+  <div class:list={["grid grid-cols-1 gap-4", colClass]}>
+    {images.map((img, i) => (
+      <figure>
+        <button
+          type="button"
+          data-index={i}
+          class="gallery-thumb block w-full cursor-zoom-in"
+          aria-label={`Enlarge image: ${img.alt}`}
+        >
+          <img src={img.src} alt={img.alt} loading="lazy" class="rounded-lg w-full" />
+        </button>
+        {img.caption && (
+          <figcaption class="text-sm opacity-70 mt-2">{img.caption}</figcaption>
+        )}
+      </figure>
+    ))}
+  </div>
+
+  <dialog
+    class="gallery-dialog fixed inset-0 m-0 h-screen w-screen max-h-none max-w-none bg-black/90 p-0 open:flex"
+  >
+    <div class="gallery-stage relative flex h-full w-full flex-col items-center justify-center p-4">
+      <button
+        type="button"
+        class="gallery-close absolute right-4 top-4 rounded-full bg-white/10 px-3 py-1 text-2xl text-white hover:bg-white/20"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+      <button
+        type="button"
+        class="gallery-prev absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-3 py-2 text-3xl text-white hover:bg-white/20"
+        aria-label="Previous image"
+      >
+        &lsaquo;
+      </button>
+      <button
+        type="button"
+        class="gallery-next absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-3 py-2 text-3xl text-white hover:bg-white/20"
+        aria-label="Next image"
+      >
+        &rsaquo;
+      </button>
+      <img class="gallery-big max-h-[85vh] max-w-full object-contain" src="" alt="" />
+      <p class="gallery-cap mt-3 max-w-3xl text-center text-sm text-white/80"></p>
+    </div>
+  </dialog>
 </div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-gallery]").forEach((root) => {
+    const dialog = root.querySelector<HTMLDialogElement>("dialog");
+    const big = root.querySelector<HTMLImageElement>(".gallery-big");
+    const cap = root.querySelector<HTMLElement>(".gallery-cap");
+    const stage = root.querySelector<HTMLElement>(".gallery-stage");
+    const thumbs = Array.from(root.querySelectorAll<HTMLImageElement>(".gallery-thumb img"));
+    if (!dialog || !big || !cap || !stage || thumbs.length === 0) return;
+
+    let current = 0;
+
+    const show = (i: number) => {
+      current = (i + thumbs.length) % thumbs.length;
+      const img = thumbs[current];
+      big.src = img.src;
+      big.alt = img.alt;
+      const figcaption = img.closest("figure")?.querySelector("figcaption");
+      cap.textContent = figcaption?.textContent ?? "";
+    };
+
+    const open = (i: number) => {
+      show(i);
+      dialog.showModal();
+      document.body.style.overflow = "hidden";
+    };
+
+    root.querySelectorAll<HTMLButtonElement>(".gallery-thumb").forEach((btn) => {
+      btn.addEventListener("click", () => open(Number(btn.dataset.index)));
+    });
+
+    root.querySelector(".gallery-close")?.addEventListener("click", () => dialog.close());
+    root.querySelector(".gallery-prev")?.addEventListener("click", () => show(current - 1));
+    root.querySelector(".gallery-next")?.addEventListener("click", () => show(current + 1));
+
+    // click on the dark background (not on the image or buttons) closes
+    stage.addEventListener("click", (e) => {
+      if (e.target === stage) dialog.close();
+    });
+
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") show(current - 1);
+      if (e.key === "ArrowRight") show(current + 1);
+    });
+
+    dialog.addEventListener("close", () => {
+      document.body.style.overflow = "";
+    });
+  });
+</script>

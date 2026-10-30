@@ -62,16 +62,18 @@ STEREO sends two kinds of HI data:
 
 Earlier work concluded that beacon data could not match science data for CME arrival forecasting. Beacon2Science is a pipeline designed to close that gap.
 
-<Gallery images={[
-  { src: "/projects/space-weather-imaging/beacon-vs-science.png", alt: "Beacon versus science image", caption: "The same CME in beacon, enhanced beacon and science data" },  
-]} />
+<Gallery columns={1} images={[
+  { src: "/space-weather-imaging/Interpolated1.png", alt: "Beacon versus enhanced beacon image" }, 
+  { src: "/space-weather-imaging/Interpolated2.png", alt: "Beacon versus enhanced beacon image" },
+  { src: "/space-weather-imaging/Interpolated3.png", alt: "Beacon versus enhanced beacon image", caption: "The same CME in beacon vs enhanced beacon data" }, 
+  ]} />
 
 **How it works**
 1. **Denoising and upsampling:** a GAN-based network improves signal-to-noise ratio and spatial resolution, while staying consistent between consecutive frames.
 2. **Cadence upsampling:** a flow-based network infers CME motion between images and generates interpolated frames.
 3. **Front segmentation and tracking:** running differences and time-elongation maps (J-plots) are built from the enhanced images.
 
-<Video src="/projects/space-weather-imaging/interpolation.mp4" caption="Frames interpolated between two beacon images" />
+<Video src="/space-weather-imaging/trim3.mp4" caption="Frames interpolated between two beacon images" />
 
 **What we found**
 - The enhanced images show CME features more clearly than the original beacon data and are comparable to science data.
@@ -87,9 +89,7 @@ Earlier work concluded that beacon data could not match science data for CME arr
 
 STRUDL (Solar Transient Recognition Using Deep Learning) automatically detects and segments CME fronts in HI images. It was trained on thousands of images from STEREO-A. From the segmented regions it derives the CME front itself, which can then be tracked.
 
-<Gallery images={[
-  { src: "/projects/space-weather-imaging/strudl.png", alt: "STRUDL detections on STEREO-A images", caption: "Detected CME regions and derived front" },
-]} />
+
 
 STRUDL reliably detects and tracks strong CMEs. Weak and overlapping events remain hard, and performance improves with more training data.
 
@@ -112,9 +112,6 @@ With STEREO-A near L4 and the solar cycle at maximum, combining viewpoints is in
 - **Coronagraph CME detection and segmentation:** TODO (datasets, models, status).
 - **Multi-view and 3D reconstruction:** combining COR2 polarised sequences with other spacecraft views, including PUNCH, to localise CME structure in 3D and recover depth.
 
-<Gallery images={[
-  { src: "/projects/space-weather-imaging/multiview.png", alt: "Multi-viewpoint CME reconstruction", caption: "Early multi-view reconstruction result" },
-]} />
 
 ---
 
